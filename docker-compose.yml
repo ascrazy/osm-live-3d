@@ -3,7 +3,7 @@ services:
   tileserver:
     image: maptiler/tileserver-gl
     volumes:
-      - ./strandedkitty-planetiler/data:/data
+      - ./data:/data
     ports:
       - 8081:8080
 

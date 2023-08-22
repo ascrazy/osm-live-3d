@@ -1,0 +1,17 @@
+FROM maven:3.8.3-openjdk-17
+
+WORKDIR /usr/src/strandedkitty-planetiler
+
+RUN git clone --depth 1 --recurse-submodules https://github.com/StrandedKitty/planetiler.git /usr/src/strandedkitty-planetiler
+
+RUN mvn -q -DskipTests --projects planetiler-dist -am clean package
+
+FROM maven:3.8.3-openjdk-17
+
+WORKDIR /usr/bin/strandedkitty-planetiler
+
+COPY --from=0 /usr/src/strandedkitty-planetiler/planetiler-dist /usr/bin/strandedkitty-planetiler/planetiler-dist
+
+VOLUME [ "/usr/src/strandedkitty-planetiler/data" ]
+
+CMD [ "java", "-cp", "planetiler-dist/target/planetiler-dist-0.6-SNAPSHOT-with-deps.jar", "com.onthegomap.planetiler.examples.StreetsProfile"]
