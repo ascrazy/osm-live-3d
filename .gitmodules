@@ -1,0 +1,3 @@
+[submodule "strandedkitty-planetiler"]
+	path = strandedkitty-planetiler
+	url = https://github.com/strandedkitty/planetiler
