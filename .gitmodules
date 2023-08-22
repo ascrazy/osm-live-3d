@@ -1,3 +1,6 @@
 [submodule "strandedkitty-planetiler"]
 	path = strandedkitty-planetiler
 	url = https://github.com/strandedkitty/planetiler
+[submodule "streets-gl"]
+	path = streets-gl
+	url = https://github.com/StrandedKitty/streets-gl

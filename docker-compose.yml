@@ -1,0 +1,14 @@
+version: '3.2'
+services:
+  tileserver:
+    image: maptiler/tileserver-gl
+    volumes:
+      - ./strandedkitty-planetiler/data:/data
+    ports:
+      - 8081:8080
+
+  streets-gl:
+    build:
+      dockerfile: ./Dockerfile.streets-gl
+    ports:
+      - 8080:8080
