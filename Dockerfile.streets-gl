@@ -1,6 +1,6 @@
 FROM node:16-alpine
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git patch
 
 WORKDIR /usr/src/streets-gl
 
@@ -10,8 +10,18 @@ RUN npm ci
 
 
 COPY ./streets-gl /usr/src/streets-gl
+COPY ./patch-streets-gl-config.patch /usr/src/streets-gl
+RUN patch -p1 < ./patch-streets-gl-config.patch
 RUN npm run build
+
+FROM node:16-alpine
+
+WORKDIR /usr/src/streets-gl
+
+COPY --from=0 /usr/src/streets-gl/build /usr/src/streets-gl/build
+
+RUN npm install -g http-server
 
 EXPOSE 8080
 
-CMD [ "npm", "run", "start" ]
+CMD [ "http-server", "./build", "-p", "8080" ]
