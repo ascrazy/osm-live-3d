@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:16-alpine as build
 
 RUN apk add --no-cache git
 
@@ -8,8 +8,8 @@ RUN git clone --depth 1 https://github.com/StrandedKitty/streets-gl.git /usr/src
 
 RUN npm ci
 
-COPY ./patch-streets-gl-config.patch /usr/src/streets-gl
-RUN git apply ./patch-streets-gl-config.patch
+RUN sed -i "s|{lat: 40.76494, lon: -73.97860, pitch: 45, yaw: 0, distance: 2000}|{lat: 52.24000, lon: 21.00000, pitch: 90, yaw: 0, distance: 25_500}|" src/app/Config.ts
+RUN sed -i "s|https://tiles.streets.gl/vector/{z}/{x}/{y}|http://localhost:8081/data/data/{z}/{x}/{y}.pbf|g" src/app/Config.ts
 
 RUN npm run build
 
@@ -17,7 +17,7 @@ FROM node:16-alpine
 
 WORKDIR /usr/bin/streets-gl
 
-COPY --from=0 /usr/src/streets-gl/build /usr/bin/streets-gl
+COPY --from=build /usr/src/streets-gl/build /usr/bin/streets-gl
 
 RUN npm install -g http-server
 

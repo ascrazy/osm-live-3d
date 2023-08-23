@@ -1,4 +1,4 @@
-FROM maven:3.8.3-openjdk-17
+FROM maven:3.8.3-openjdk-17 as build
 
 WORKDIR /usr/src/strandedkitty-planetiler
 
@@ -10,7 +10,7 @@ FROM maven:3.8.3-openjdk-17
 
 WORKDIR /usr/bin/strandedkitty-planetiler
 
-COPY --from=0 /usr/src/strandedkitty-planetiler/planetiler-dist /usr/bin/strandedkitty-planetiler/planetiler-dist
+COPY --from=build /usr/src/strandedkitty-planetiler/planetiler-dist /usr/bin/strandedkitty-planetiler/planetiler-dist
 
 VOLUME [ "/usr/src/strandedkitty-planetiler/data" ]
 
